@@ -1,4 +1,4 @@
-app = "electric-starter-app"
+app = "gbo-dashboard"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []

@@ -1,4 +1,4 @@
-name: hyperfiddle/electric-starter-app
+name: GetBitOutdoors/gbo-dashboard
 on:
   push:
     branches:

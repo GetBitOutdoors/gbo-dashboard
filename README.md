@@ -1,4 +1,4 @@
-# electric-starter-app
+# gbo-dashboard
 
 ```
 $ clj -A:dev -X user/main
@@ -25,16 +25,16 @@ java -DHYPERFIDDLE_ELECTRIC_SERVER_VERSION=$HYPERFIDDLE_ELECTRIC_APP_VERSION -ja
 ```
 
 ```
-docker build --progress=plain --build-arg VERSION="$HYPERFIDDLE_ELECTRIC_APP_VERSION" -t electric-starter-app .
-docker run --rm -p 7070:8080 electric-starter-app
+docker build --progress=plain --build-arg VERSION="$HYPERFIDDLE_ELECTRIC_APP_VERSION" -t gbo-dashboard .
+docker run --rm -p 7070:8080 gbo-dashboard
 ```
 
 ```
 # flyctl launch ... ? create fly app, generate fly.toml, see dashboard
-# https://fly.io/apps/electric-starter-app
+# https://fly.io/apps/gbo-dashboard
 
 NO_COLOR=1 flyctl deploy --build-arg VERSION="$HYPERFIDDLE_ELECTRIC_APP_VERSION"
-# https://electric-starter-app.fly.dev/
+# https://gbo-dashboard.fly.dev/
 ```
 
 - `NO_COLOR=1` disables docker-cli fancy shell GUI, so that we see the full log (not paginated) in case of exception
