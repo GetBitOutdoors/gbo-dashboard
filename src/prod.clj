@@ -1,6 +1,6 @@
 (ns prod
   (:gen-class)
-  (:require app.todo-list ; in prod, load app into server so it can accept clients
+  (:require app.dashboard ; in prod, load app into server so it can accept clients
             clojure.string
             electric-server-java8-jetty9))
 

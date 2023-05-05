@@ -3,8 +3,8 @@
   (:require [clojure.tools.build.api :as b]
             [org.corfield.build :as bb]
             [shadow.cljs.devtools.api :as shadow-api] ; so as not to shell out to NPM for shadow
-            [shadow.cljs.devtools.server :as shadow-server]
-            ))
+            [shadow.cljs.devtools.server :as shadow-server]))
+
 
 (def lib 'com.hyperfiddle/electric)
 (def version (b/git-process {:git-args "describe --tags --long --always --dirty"}))

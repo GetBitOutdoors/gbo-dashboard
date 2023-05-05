@@ -36,7 +36,7 @@ label::first-letter{
     text-transform: capitalize;
 }
 
-.todo-list{
+.gator-orders{
     display:grid;
     grid-template-rows: auto fit-content auto;
     max-width: 30rem;
