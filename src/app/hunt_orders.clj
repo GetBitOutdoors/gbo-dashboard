@@ -228,3 +228,7 @@
   (def hunt-purchases (atom []))
   (def days-back (atom 5))
   (get-recent-orders! recent-orders @days-back))
+
+(defn java-fn []
+  (str "java trace "
+    (pr-str (type 1))))
