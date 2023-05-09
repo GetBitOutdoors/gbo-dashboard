@@ -11,6 +11,8 @@
 
 ;(read-config "config.edn")
 
+(def !query-status (atom "Query Not Run"))
+
 (def store-hash (System/getenv "STORE_HASH"))
 (def order-read-only-token (System/getenv "ORDERS_API_TOKEN"))
 (def api-base-url
@@ -148,7 +150,8 @@
       (if
         (some? page-of-orders)
         (do
-          (pprint (str "page " page-number " of orders..."))
+          (pprint (str "Get page " page-number " of orders..."))
+          (reset! !query-status (str "Get page " page-number " of orders..."))
           (swap! orders-atom
             #(merge %
                (->> page-of-orders
@@ -157,7 +160,9 @@
                      [order-id order]))
                  (into {}))))
           (recur (inc page-number)))
-        (println "get recent orders ended")))))
+        (do
+          (println "get recent orders finished")
+          (reset! !query-status "Get recent orders finished"))))))
 
 
 (defn get-order-products [{order-id :id :as order}]
@@ -206,6 +211,7 @@
 (defn get-hunt-purchases [orders orders-atom hunt-purchases-atom]
   (doseq [order orders]
     (pprint "getting products...")
+    (reset! !query-status (str "Getting products..."))
     (let
       [order-products (get-order-products order)
        hunt-products-in-order
@@ -217,10 +223,13 @@
       (if (seq hunt-products-in-order)
         (do
           (println "found hunt order...")
+          (reset! !query-status "Found hunt order!")
           (println hunt-products-in-order)
           (swap! hunt-purchases-atom
             #(vec (concat % hunt-products-in-order))))
-        (println "no hunt products in this order...")))))
+        (do
+          (println "no hunt products in this order...")
+          (reset! !query-status (str "No hunt products in this order...")))))))
 
 (comment
   (def recent-orders (atom {}))
