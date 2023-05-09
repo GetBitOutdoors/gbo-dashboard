@@ -1,0 +1,6 @@
+{:database-uri #env DATABASE_URI
+ :secrets #include #join [#env HOME "/.secrets.edn"]
+
+ :aws-secret-access-key
+ #profile {:test #ref [:secrets :aws-test-key]
+           :prod #ref [:secrets :aws-prod-key]}}

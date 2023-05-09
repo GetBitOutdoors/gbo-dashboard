@@ -1,6 +1,7 @@
 {:paths ["src" "resources"]
  :deps {com.hyperfiddle/electric {:mvn/version "v2-alpha-284-g0bc5f4bc"}
         com.hyperfiddle/rcf {:mvn/version "20220926-202227"}
+
         info.sunng/ring-jetty9-adapter
         {:mvn/version "0.14.3" ; (Jetty 9) is Java 8 compatible;
          ;:mvn/version "0.17.7" ; (Jetty 10) is NOT Java 8 compatible
@@ -9,7 +10,15 @@
         org.clojure/clojurescript {:mvn/version "1.11.60"}
         org.clojure/tools.logging {:mvn/version "1.2.4"}
         ch.qos.logback/logback-classic {:mvn/version "1.2.11"}
-        ring-basic-authentication/ring-basic-authentication {:mvn/version "1.1.1"}}
+        ring-basic-authentication/ring-basic-authentication {:mvn/version "1.1.1"}
+
+        juxt/aero {:git/url "https://github.com/juxt/aero"
+                   :git/sha "814b0006a1699e8149045e55c4e112e61b983fe9"}
+        clj-http/clj-http {:mvn/version "3.12.3"}
+        tick/tick {:mvn/version "0.6.2"}
+        camel-snake-kebab/camel-snake-kebab {:mvn/version "0.4.3"}
+        cheshire/cheshire {:mvn/version "5.11.0"}}
+
  :aliases {:dev
            {:extra-deps
             {binaryage/devtools {:mvn/version "1.0.6"}
