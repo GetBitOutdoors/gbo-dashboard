@@ -1,9 +1,10 @@
 (ns app.dashboard
   (:require contrib.str
-    #?(:clj [app.hunt-orders :as orders])
-    [hyperfiddle.electric :as e]
-    [hyperfiddle.electric-dom2 :as dom]
-    [hyperfiddle.electric-ui4 :as ui]))
+            #?(:clj [app.hunt-orders :as orders])
+            [hyperfiddle.electric :as e]
+            [hyperfiddle.electric-dom2 :as dom]
+            [hyperfiddle.electric-ui4 :as ui]
+            [clojure.string :as string]))
 
 
 ; server state
@@ -18,7 +19,7 @@
 (e/def days-back (e/server (e/watch !days-back)))
 
 (def header-keys
-  [#_:base-total :email :last-name :date-created #_:refunded-amount :phone :name :city :payment-method :state :first-name #_:country-iso-2 :price-inc-tax :preferred-date :total-inc-tax :order-id :payment-provider-id :quantity :payment-status :geoip-country #_:staff-notes :product-id :country #_:refund-amount #_:company])
+  [#_:base-total #_:email #_:phone :order-id #_:refunded-amount :date-created #_:product-id :name :quantity #_:first-name :preferred-date #_:country-iso-2 :last-name :payment-method :city :state :price-inc-tax :total-inc-tax #_:payment-provider-id :payment-status #_:staff-notes :geoip-country :country #_:refund-amount #_:company])
 
 (e/defn gator-orders []
   (e/client
@@ -93,16 +94,27 @@
             (e/for [purchase (reverse (sort-by :order-id hunt-purchases))]
               (dom/tr
                 (e/for [h header-keys]
-                  (dom/td
-                    (dom/style {:border "1px solid black"
-                                :background-color "white"})
-                    (if (= h :order-id)
-                      (dom/a
-                        (dom/props
-                          {:href
-                           (str "https://store-7hstasnrjg.mybigcommerce.com/manage/orders/" (purchase h))})
+                  (let [v (purchase h)]
+                    (dom/td
+                      (dom/style
+                        {:border "1px solid black"
+                         :padding "0 5px"
+                         :text-align "center"
+                         :background-color "white"})
+                      (case h
+                        :date-created ; "Thu, 11 May 2023 20:20:42 +0000"
                         (dom/text
-                          (purchase h)))
-                      (dom/text
-                        (purchase h))))))))))))
+                          (-> v
+                            (string/split #" ")
+                            (->>
+                              (take 4)
+                              (interpose " ")
+                              (apply str))))
+                        :order-id
+                        (dom/a
+                          (dom/props
+                            {:href
+                             (str "https://store-7hstasnrjg.mybigcommerce.com/manage/orders/" (purchase h))})
+                          (dom/text v))
+                        (dom/text v))))))))))))
 
