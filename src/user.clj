@@ -22,7 +22,6 @@
 (comment
   (main) ; Electric Clojure(JVM) REPL entrypoint
   (hyperfiddle.rcf/enable!) ; turn on RCF after all transitive deps have loaded
-  (shadow.cljs.devtools.api/repl :dev) ; shadow server hosts the cljs repl
+  (shadow.cljs.devtools.api/repl :dev)) ; shadow server hosts the cljs repl
   ; connect a second REPL instance to it
   ; (DO NOT REUSE JVM REPL it will fail weirdly)
-  (type 1))

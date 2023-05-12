@@ -19,7 +19,7 @@
 (e/def days-back (e/server (e/watch !days-back)))
 
 (def header-keys
-  [#_:base-total #_:email #_:phone :order-id #_:refunded-amount :date-created #_:product-id :name :quantity #_:first-name :preferred-date #_:country-iso-2 :last-name :payment-method :city :state :price-inc-tax :total-inc-tax #_:payment-provider-id :payment-status #_:staff-notes :geoip-country :country #_:refund-amount #_:company])
+  [#_:base-total #_:email #_:phone :order-id #_:refunded-amount :date-created #_:product-id :name :hog-combo :quantity #_:first-name :preferred-date #_:country-iso-2 :last-name :payment-method :city :state :price-inc-tax :total-inc-tax #_:payment-provider-id :payment-status #_:staff-notes :geoip-country :country #_:refund-amount #_:company])
 
 (e/defn gator-orders []
   (e/client
@@ -29,11 +29,18 @@
         ;  (pr-str recent-orders))))
 
     (dom/div
-      (dom/text "Status: " query-status " ")
+      (dom/text "Status:")
+      (dom/span
+        (dom/style
+          {:display "inline-block"
+           :background-color "yellow"
+           :padding "0 5px"
+           :margin-right "10px"})
+        (dom/text query-status))
       (ui/button
         (e/fn []
           (e/server
-            (reset! orders/!query-status "Reset Status")))
+            (reset! orders/!query-status "")))
         (dom/text "Reset Status")))
 
     (dom/div
@@ -42,8 +49,9 @@
         (e/fn []
           (e/server
             (orders/get-recent-orders! !recent-orders @!days-back)))
-        (dom/style {:display "inline-block"
-                    :margin-right "10px"})
+        (dom/style
+          {:display "inline-block"
+           :margin-right "10px"})
         (dom/text "Get Orders"))
 
       (ui/button
@@ -54,16 +62,19 @@
                     :margin-right "10px"})
         (dom/text "Clear Orders"))
 
-      (dom/text "Orders Counted: "
-        (e/server (count @!recent-orders))))
+
+      (e/server (when (some? @!recent-orders))
+        (e/client
+          (dom/text "Orders Pulled: "
+            (e/server (count @!recent-orders))))))
 
     (dom/div
-      (dom/text "How many days to go back: " days-back " ")
+      (dom/text "How many days to go back:  " days-back " ")
       (ui/long
-        (clojure.math/round days-back)
+        days-back
         (e/fn [v]
           (e/server
-            (reset! !days-back v)))))
+            (reset! !days-back (clojure.math/round v))))))
 
     (dom/div
       (ui/button
@@ -89,7 +100,12 @@
         (dom/thead
           (dom/tr
             (e/for [h header-keys]
-              (dom/td (dom/text (name h))))))
+              (dom/td
+                (dom/style
+                  {:text-align "center"
+                   :text-transform "uppercase"
+                   :font-size "10px"})
+                (dom/text (name h))))))
         (dom/tbody
             (e/for [purchase (reverse (sort-by :order-id hunt-purchases))]
               (dom/tr
